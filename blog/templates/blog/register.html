@@ -1,0 +1,31 @@
+{% extends 'blog/padre.html' %}
+{% load static %}
+
+
+{% block dir %}
+<title>Registrarse</title>
+{% endblock %}
+
+{% block titulo %}
+<h1 class="fw-bolder">Sportif</h1>
+<p class="lead mb-0">El nuevo blog de deportes</p>
+<h1>{{ mensaje }}</h1>
+{% endblock %}
+
+{% block pagina %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h3>Registro de Usuarios</h3>
+            <form action="{% url 'register' %}" method="POST"> 
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit" value="Registrarse">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>            
+{% endblock %}
