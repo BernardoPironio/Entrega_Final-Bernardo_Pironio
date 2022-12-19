@@ -12,3 +12,11 @@ class RegistroUsuario(UserCreationForm):
         model=User
         fields=['username','email','password1','password2']
         help_texts={k:'' for k in fields}
+
+class PostF(forms.Form):
+    titulo=forms.CharField(max_length=30)
+    subtitulo=forms.CharField(max_length=30)
+    autor=forms.CharField(max_length=30)
+    fecha=forms.DateField()
+    texto=forms.CharField(widget=forms.Textarea(attrs={'name':'texto','rows':20,'cols':100}))
+    imagen=forms.ImageField()

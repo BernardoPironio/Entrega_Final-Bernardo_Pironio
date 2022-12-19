@@ -23,11 +23,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href={% url 'about' %}>About</a></li>
-                        <li class="nav-item"><a class="nav-link" href={% url 'register' %}>Registrarse</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href={% url 'logout' %}>Deslogearse</a></li>
+                        <li class="nav-item"><a class="nav-link" href={% url 'crear' %}>Postear</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href={% url 'login' %}>Logearse</a></li>
+                        <li class="nav-item"><a class="nav-link" href={% url 'register' %}>Registrarse</a></li>
                         {% endif %}
                     </ul>
                 </div>

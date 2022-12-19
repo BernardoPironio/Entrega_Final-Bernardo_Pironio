@@ -9,4 +9,6 @@ urlpatterns = [
     path('registrar/',register,name='register'),
     path('logear/',login_request,name='login'),
     path('deslogearse/',LogoutView.as_view(),name='logout'),
+
+    path('crear/',crear,name='crear'),
 ]
