@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from blog.models import Post
 from blog.forms import RegistroUsuario, PostF
 
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import login,logout,authenticate
+
 
 
 
@@ -16,9 +17,10 @@ def about(request):
 
 #parte de db
 
+
 def crear(request):
     if request.method=='POST':
-        form=PostF(request.POST, request.FILES)
+        form=PostF(request.POST or None, request.FILES or None)
         if form.is_valid():
             informacion=form.cleaned_data
             titulo=informacion['titulo']
@@ -27,12 +29,17 @@ def crear(request):
             fecha=informacion['fecha']
             texto=informacion['texto']
             imagen=informacion['imagen']
-            post=PostF(titulo=titulo,subtitulo=subtitulo,autor=autor,fecha=fecha,texto=texto,imagen=imagen)
+            post=Post(titulo=titulo,subtitulo=subtitulo,autor=autor,fecha=fecha,texto=texto,imagen=imagen)
             post.save()
-            return render(request, 'blog/inicio.html',{'mensaje':'post creado correctamente'})
+            posts=Post.objects.all()
+            return render(request, 'blog/inicio.html',{'mensaje':'Post creado correctamente','posts':posts})
     else:
-        formulario=PostF()
-    return render(request, 'blog/crear.html', {'form': formulario})
+        form=PostF()
+    return render(request, 'blog/crear.html', {'form': form})
+
+def leer_mas(request,id):
+    post=get_object_or_404(Post,id=id)
+    return render(request,'blog/leer_mas.html',{'post':post})
 
 
 #parte de usuarios
@@ -59,7 +66,8 @@ def login_request(request):
             usuario=authenticate(username=usu,password=clave)
             if usuario is not None:
                 login(request,usuario)
-                return render(request, 'blog/inicio.html', {'mensaje':f'Bienvenido {usuario}, usuario logeado'})
+                posts=Post.objects.all()
+                return render(request, 'blog/inicio.html', {'mensaje':f'Bienvenido {usuario}, usuario logeado','posts':posts})
             else:
                 return render(request, 'blog/login.html', {'form':form,'mensaje':'Usuario o Contraseña incorrectos'})
         else:

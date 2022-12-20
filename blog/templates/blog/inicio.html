@@ -2,6 +2,7 @@
 {% load static %}
 
 
+
 {% block dir %}
 <title>Inicio</title>
 {% endblock %}
@@ -9,6 +10,7 @@
 {% block titulo %}
 <h1 class="fw-bolder">Sportif</h1>
 <p class="lead mb-0">El nuevo blog de deportes</p>
+<p class="lead mb-0">Para postear, por favor logearse</p>
 <h1>{{ mensaje }}</h1>  
 {% endblock %}
 
@@ -20,12 +22,12 @@
             <!-- Featured blog post-->
             {% for post in posts %}
                 <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                    <a href="#!"><img class="card-img-top" src="{{ post.imagen.url }}" alt="..." /></a>
                     <div class="card-body">
-                        <div class="small text-muted">{{ post.fehca }}</div>
                         <h2 class="card-title">{{ post.titulo }}</h2>
                         <p class="card-text">{{ post.subtitulo }}</p>
-                        <a class="btn btn-primary" href="#!">Read more →</a>
+                        <p class="card-text">{{ post.fecha }}</p>
+                        <a class="btn btn-primary" href={% url 'leer_mas' post.id %}>Leer mas →</a>
                     </div>
                 </div>
             {% endfor %}
