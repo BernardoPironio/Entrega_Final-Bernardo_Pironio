@@ -14,6 +14,9 @@ urlpatterns = [
 
     path('crear/',crear,name='crear'),
     path('leermas<id>/',leer_mas,name='leer_mas'),
+    path('buscar/', buscar, name='buscar'),
+    path('eliminar<id>/', eliminar, name='eliminar'),
+    path('editar<id>/', editar,name='editar'),
     
 
 

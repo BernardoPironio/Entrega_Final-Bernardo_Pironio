@@ -1,0 +1,30 @@
+{% extends 'blog/padre.html' %}
+{% load static %}
+
+
+{% block dir %}
+<title>Formulario</title>
+{% endblock %}
+
+{% block titulo %}
+<h1 class="fw-bolder">Sportif</h1>
+<p class="lead mb-0">Edicion de Posts</p>
+<h1>{{ mensaje }}</h1>
+{% endblock %}
+
+{% block pagina %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h3>Editar Post--{{ post.titulo }}</h3>
+            <form action="{% url 'editar' post.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit" value="Editar">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>            
+{% endblock %}
