@@ -1,10 +1,10 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from blog.models import Post
-from blog.forms import RegistroUsuario, PostF
+from blog.forms import RegistroUsuario, PostF, EdicionUsuario
 
 from django.contrib.auth.decorators import login_required as lr
 
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout,authenticate
 
 from datetime import datetime as dt
@@ -119,3 +119,36 @@ def login_request(request):
     else:
         form=AuthenticationForm()
     return render(request,'blog/login.html',{'form':form})
+
+@lr
+def perfil(request):
+    posts=Post.objects.all()
+    cantidad_de_posts=0
+    for post in posts:
+        if post.autor==request.user.username:
+            cantidad_de_posts+=1
+    return render(request, 'blog/perfil.html',{'cantidad_de_posts':cantidad_de_posts})
+
+@lr
+def editar_perfil(request):
+    usuario=request.user
+    if request.method=='POST':
+        form=EdicionUsuario(request.POST)
+        if form.is_valid():
+            informacion=form.cleaned_data
+            usuario.username=informacion['username']    
+            usuario.email=informacion['email']
+            usuario.password1=informacion['password1']
+            usuario.password2=informacion['password2']
+            usuario.first_name=informacion['first_name']
+            usuario.last_name=informacion['last_name']
+            usuario.save()
+            return render(request, 'blog/perfil.html',{'mensaje':'Usuario editado correctamente'})
+        else:
+            return render(request, 'blog/editar_perfil.html',{'form':form,'usuario':usuario,'mensaje':'Error al crear el perfil'})
+    else:
+        form=EdicionUsuario(initial={'username':usuario.username,'email':usuario.email,'first_name':usuario.first_name,'last_name':usuario.last_name})
+    return render(request, 'blog/editar_perfil.html',{'form':form,'usuario':usuario})
+    
+
+
