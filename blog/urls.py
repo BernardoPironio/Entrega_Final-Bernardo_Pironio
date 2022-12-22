@@ -20,6 +20,9 @@ urlpatterns = [
     path('eliminar<id>/', eliminar, name='eliminar'),
     path('editar<id>/', editar,name='editar'),
 
+    path('agregaravatar/',agregar_avatar,name='agregar_avatar'),
+    path('agregardescripcion/',agregar_descripcion, name='agregar_descripcion')
+
     
 
 

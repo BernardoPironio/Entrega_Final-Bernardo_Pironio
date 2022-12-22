@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404, redirect
-from blog.models import Post
-from blog.forms import RegistroUsuario, PostF, EdicionUsuario
+from blog.models import Post,Avatar,Descripcion
+from blog.forms import RegistroUsuario, PostF, EdicionUsuario, AvatarF,DescripcionF
 
 from django.contrib.auth.decorators import login_required as lr
 
@@ -127,7 +127,19 @@ def perfil(request):
     for post in posts:
         if post.autor==request.user.username:
             cantidad_de_posts+=1
-    return render(request, 'blog/perfil.html',{'cantidad_de_posts':cantidad_de_posts})
+
+    lista=Avatar.objects.filter(user=request.user)
+    if len(lista)!=0:
+        imagen=lista[0].imagen.url
+    else:
+        imagen='/media/avatares/avatar_defecto.png'
+
+    lista_descripcion=Descripcion.objects.filter(user=request.user)
+    if len(lista_descripcion)!=0:
+        descripcion=lista_descripcion[0]
+    else:
+        pass
+    return render(request, 'blog/perfil.html',{'cantidad_de_posts':cantidad_de_posts,'imagen':imagen,'descripcion':descripcion})
 
 @lr
 def editar_perfil(request):
@@ -149,6 +161,40 @@ def editar_perfil(request):
     else:
         form=EdicionUsuario(initial={'username':usuario.username,'email':usuario.email,'first_name':usuario.first_name,'last_name':usuario.last_name})
     return render(request, 'blog/editar_perfil.html',{'form':form,'usuario':usuario})
+
+@lr
+def agregar_avatar(request):
+    if request.method=='POST':
+        form=AvatarF(request.POST,request.FILES)
+        if form.is_valid():
+            avatar_anterior=Avatar.objects.filter(user=request.user)
+            if len(avatar_anterior)>0:
+                avatar_anterior[0].delete()
+            avatar=Avatar(user=request.user, imagen=request.FILES['imagen'])
+            avatar.save()
+            return redirect('perfil')
+        else:
+            return render(request, 'blog/agregar_avatar.html',{'form':form,'usuario':request.user,'mensaje':'Error al agregar Avatar'})
+    else:
+        form=AvatarF()
+        return render(request, 'blog/agregar_avatar.html',{'form':form,'usuario':request.user})
+
+def agregar_descripcion(request):
+    if request.method=='POST':
+        form=DescripcionF(request.POST)
+        if form.is_valid():
+            descripcion_anterior=Descripcion.objects.filter(user=request.user)
+            if len(descripcion_anterior)>0:
+                descripcion_anterior[0].delete()
+            descripcion=Descripcion(user=request.user,descripcion=request.POST['descripcion'])
+            descripcion.save()
+            return redirect('perfil')
+        else:
+            return render(request, 'blog/agregar_descripcion.html',{'form':form,'usuario':request.user,'mensaje':'Error al agregar Descripcion'})
+    else:
+        form=DescripcionF()
+        return render(request,'blog/agregar_descripcion.html',{'form':form,'usuario':request.user})
+
     
 
 

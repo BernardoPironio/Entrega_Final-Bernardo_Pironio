@@ -1,0 +1,32 @@
+{% extends 'blog/padre.html' %}
+{% load static %}
+
+
+{% block dir %}
+<title>Agregar Avatar</title>
+{% endblock %}
+
+{% block titulo %}
+<h1 class="fw-bolder">Sportif</h1>
+<p class="lead mb-0">Agregar Avatar</p>
+<h1>{{ mensaje }}</h1>
+{% endblock %}
+
+{% block pagina %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h3>Agregar avatar de: {{ user.username }}</h3>
+            <h5>Por favor agregar imagenes 150x150</h5>
+            <form action="{% url 'agregar_avatar' %}" method="POST" enctype="multipart/form-data"> 
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit" value="Agregar">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>            
+{% endblock %}

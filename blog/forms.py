@@ -36,3 +36,8 @@ class PostF(forms.Form):
     texto=forms.CharField(widget=forms.Textarea(attrs={'name':'texto','rows':20,'cols':100}))
     imagen=forms.ImageField()
 
+class AvatarF(forms.Form):
+    imagen=forms.ImageField(label='Imagen')
+
+class DescripcionF(forms.Form):
+    descripcion=forms.CharField(widget=forms.Textarea(attrs={'name':'descripcion','rows':10,'cols':100}))
