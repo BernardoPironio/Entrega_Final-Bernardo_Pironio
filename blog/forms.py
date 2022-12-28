@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from ckeditor.widgets import CKEditorWidget
 
 class RegistroUsuario(UserCreationForm):
     email=forms.EmailField()
@@ -33,7 +34,7 @@ class EdicionUsuario(UserCreationForm):
 class PostF(forms.Form):
     titulo=forms.CharField(max_length=30)
     subtitulo=forms.CharField(max_length=30)
-    texto=forms.CharField(widget=forms.Textarea(attrs={'name':'texto','rows':20,'cols':100}))
+    texto=forms.CharField(widget=CKEditorWidget())
     imagen=forms.ImageField()
 
 class AvatarF(forms.Form):

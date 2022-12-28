@@ -24,6 +24,7 @@
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href={% url 'logout' %}>Deslogearse</a></li>
                         <li class="nav-item"><a class="nav-link" href={% url 'crear' %}>Postear</a></li>
+                        <li class="nav-item"><a class="nav-link" href={% url 'perfil' %}>Perfil</a></li>
                         {% else %} 
                         <li class="nav-item"><a class="nav-link" href={% url 'login' %}>Logearse</a></li>
                         <li class="nav-item"><a class="nav-link" href={% url 'register' %}>Registrarse</a></li>
@@ -50,7 +51,7 @@
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.imagen.url }}" alt="..." /></figure>
                         <!-- Post content-->
                         <section class="mb-5">
-                            <p class="fs-5 mb-4">{{ post.texto }}</p>
+                            <p class="fs-5 mb-4">{{ post.texto|safe }}</p>
                             
                         </section>
                     </article>

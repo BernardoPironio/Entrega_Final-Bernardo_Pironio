@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Post(models.Model):
@@ -7,7 +8,7 @@ class Post(models.Model):
     subtitulo=models.CharField(max_length=30,null=True)
     autor=models.CharField(max_length=30,null=True)
     fecha=models.DateField()
-    texto=models.TextField(max_length=200)
+    texto=RichTextField()
     imagen=models.ImageField()
 
     def __str__(self):
