@@ -1,0 +1,30 @@
+{% extends 'blog/padre.html' %}
+{% load static %}
+
+
+{% block dir %}
+<title>Leer Mensajes</title>
+{% endblock %}
+
+{% block titulo %}
+<h1 class="fw-bolder">Sportif</h1>
+<p class="lead mb-0">Mensajes</p>
+{% endblock %}
+
+{% block pagina %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            {% if mensajes %}
+            {% for mensaje in mensajes %}
+            <h5>Emisor: {{ mensaje.emisor }}</h5>
+            <p> Mensaje: {{ mensaje.mensaje }}</p>
+            <hr>
+            {% endfor %}
+            {% else %}
+            <h1 style="text-align: right;">No hay mensajes aun</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>            
+{% endblock %}

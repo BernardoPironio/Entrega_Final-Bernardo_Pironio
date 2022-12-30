@@ -1,0 +1,30 @@
+{% extends 'blog/padre.html' %}
+{% load static %}
+
+
+{% block dir %}
+<title> Enviar Mensaje</title>
+{% endblock %}
+
+{% block titulo %}
+<h1 class="fw-bolder">Sportif</h1>
+<p class="lead mb-0">Enviar mensajes</p>
+<h1>{{ mensaje }}</h1>
+{% endblock %}
+
+{% block pagina %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h3>Enviar Mensajes</h3>
+            <form action="{% url 'enviar_mensaje' %}" method="POST"> {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit" value="Enviar">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>            
+{% endblock %}

@@ -13,7 +13,12 @@ from datetime import datetime as dt
 
 def inicio(request):
     posts=Post.objects.all()
-    return render(request, 'blog/inicio.html',{'posts':posts})
+
+    cantidad_posts=0
+    for post in posts:
+        cantidad_posts+=1
+
+    return render(request, 'blog/inicio.html',{'posts':posts,'cantidad_posts':cantidad_posts})
 
 def about(request):
     return render(request, 'blog/about.html')
@@ -47,7 +52,12 @@ def buscar(request):
     if request.GET['titulo']:
         titulo=request.GET['titulo']
         posts=Post.objects.filter(titulo__icontains=titulo)
-        return render(request, 'blog/inicio.html', {'posts':posts})
+
+        cantidad_posts=0
+        for post in posts:
+            cantidad_posts+=1
+
+        return render(request, 'blog/inicio.html', {'posts':posts,'cantidad_posts':cantidad_posts})
     else:
         return render(request,'blog/inicio.html',{'mensaje':'No se a encontrado post','posts':posts})
 
@@ -58,7 +68,12 @@ def eliminar(request, id):
         post.delete()
     else:
         posts=Post.objects.all()
-        return render(request, 'blog/inicio.html', {'mensaje':'Usted no creo el post, no es posible eliminarlo', 'posts':posts})
+
+        cantidad_posts=0
+        for post in posts:
+            cantidad_posts+=1
+
+        return render(request, 'blog/inicio.html', {'mensaje':'Usted no creo el post, no es posible eliminarlo', 'posts':posts,'cantidad_posts':cantidad_posts})
     return redirect('inicio')
 
 @lr
@@ -77,13 +92,23 @@ def editar(request,id):
                 post.imagen=informacion['imagen']
                 post.save()
                 posts=Post.objects.all()
-                return render(request, 'blog/inicio.html', {'posts':posts})
+
+                cantidad_posts=0
+                for post in posts:
+                    cantidad_posts+=1
+
+                return render(request, 'blog/inicio.html', {'posts':posts,'cantidad_posts':cantidad_posts})
         else:
             form=PostF(initial={'titulo':post.titulo,'subtitulo':post.subtitulo,'texto':post.texto,'imagen':post.imagen})
         return render(request, 'blog/editar.html',{'form':form,'post':post})
     else:
         posts=Post.objects.all()
-        return render(request, 'blog/inicio.html', {'mensaje':'Usted no creo el post, no es posible editarlo', 'posts':posts})
+
+        cantidad_posts=0
+        for post in posts:
+            cantidad_posts+=1
+
+        return render(request, 'blog/inicio.html', {'mensaje':'Usted no creo el post, no es posible editarlo', 'posts':posts,'cantidad_posts':cantidad_posts})
     
 
 #parte de usuarios
@@ -95,7 +120,12 @@ def register(request):
             username=form.cleaned_data.get('username')
             form.save()
             posts=Post.objects.all()
-            return render(request, 'blog/inicio.html',{'mensaje':f'Usuario {username} creado correctamente','posts':posts})
+
+            cantidad_posts=0
+            for post in posts:
+                cantidad_posts+=1
+
+            return render(request, 'blog/inicio.html',{'mensaje':f'Usuario {username} creado correctamente','posts':posts,'cantidad_posts':cantidad_posts})
         else:
             return render(request, 'blog/register.html',{'form':form,'mensaje':'Error al crear el usuario'})
     else:
@@ -113,7 +143,13 @@ def login_request(request):
                 login(request,usuario)
                 return redirect('inicio')
             else:
-                return render(request, 'blog/login.html', {'form':form,'mensaje':'Usuario o Contraseña incorrectos'})
+
+                posts=Post.objects.all()
+                cantidad_posts=0
+                for post in posts:
+                    cantidad_posts+=1
+
+                return render(request, 'blog/login.html', {'form':form,'mensaje':'Usuario o Contraseña incorrectos','cantidad_posts':cantidad_posts})
         else:
             return render(request, 'blog/login.html', {'form':form,'mensaje':'Usuario o Contraseña incorrectos'})
     else:
@@ -138,7 +174,7 @@ def perfil(request):
     if len(lista_descripcion)!=0:
         descripcion=lista_descripcion[0]
     else:
-        pass
+        descripcion='NO HAY DESCRIPCION AUN'
     return render(request, 'blog/perfil.html',{'cantidad_de_posts':cantidad_de_posts,'imagen':imagen,'descripcion':descripcion})
 
 @lr
@@ -155,7 +191,7 @@ def editar_perfil(request):
             usuario.first_name=informacion['first_name']
             usuario.last_name=informacion['last_name']
             usuario.save()
-            return render(request, 'blog/perfil.html',{'mensaje':'Usuario editado correctamente'})
+            return redirect('perfil')
         else:
             return render(request, 'blog/editar_perfil.html',{'form':form,'usuario':usuario,'mensaje':'Error al crear el perfil'})
     else:
